@@ -16,54 +16,65 @@ typedef struct {
     size_t capacity;
 } vector_t;
 
+bool is_safe(vector_t *vec) {
+    bool is_increasing = false;
+    bool is_decreasing = false;
+
+    for (size_t it = 0; it < vec->count - 1; it++) {
+        if (vec->items[it] > vec->items[it + 1])
+            is_decreasing = true;
+        if (vec->items[it] < vec->items[it + 1])
+            is_increasing = true;
+
+        size_t diff = abs(vec->items[it] - vec->items[it + 1]);
+
+        if (diff < 1 || diff > 3)
+            return false;
+    }
+
+    return (is_increasing ^ is_decreasing) ? true : false;
+}
+
 int main(int argc, char *argv[]) {
     const size_t ts = 1000;
-    const size_t max = 1000;
+    const size_t max = 100;
 
     size_t soln = 0;
     
-    for (size_t i = 0; i < 1000; i++) {
-        vector_t report = {0};
-        bool is_increasing = false;
-        bool is_decreasing = false;
-        bool is_safe = true;
-        
+    for (size_t i = 0; i < ts; i++) {
+        vector_t report = {0};      
         char cstr[max];
        	fgets(cstr, max, stdin);
 
-        size_t index = 0;
         char *token = strtok(cstr, " ");
 		while (token != NULL) {
             int item = atoi(token);
-            
             vector_append(&report, item);
+            
             token = strtok(NULL, " ");
         }
 
-        #if 1
-        printf("%d -> ", i);
-        for (size_t j = 0; j < report.count; j++)
-            printf("%d ", report.items[j]);
-        printf("\n");
-        #endif
+        if (is_safe(&report)) {
+            soln++;
+        }
+        // this chunk of code is for part 2
+        else {
+            for (size_t j = 0; j < report.count; j++) {
+                vector_t report_copy = {0};
 
-        for (size_t j = 0; j < report.count - 1; j++) {
-            if (report.items[j] > report.items[j + 1])
-                is_decreasing = true;
-            else if (report.items[j] < report.items[j + 1])
-                is_increasing = true;
+                for (size_t z = 0; z < report.count; z++)
+                    vector_append(&report_copy, report.items[z]);
+                vector_remove(&report_copy, j);
 
-            int diff = abs(report.items[j] - report.items[j + 1]);
-            if (diff > 3 || diff < 1) {
-                is_safe = false;
-                break;
+                if (is_safe(&report_copy)) {
+                    soln++;
+                    vector_free(report_copy);
+                    break;
+                }
+                vector_free(report_copy);
             }
         }
-
-        if (is_safe && !(is_decreasing & is_increasing))
-            soln++;
-
-        vector_free(&report);
+	 	vector_free(report);       
     }
 
     printf("solution: %zu\n", soln);
