@@ -29,15 +29,13 @@
     do {                                                \
         for (size_t i = pos; i < (vec)->count - 1; i++) \
             (vec)->items[i] = (vec)->items[i + 1];      \
-        (vec)->items[(vec)->count] = 0;                 \
         (vec)->count--;                                 \
+        (vec)->items[(vec)->count] = 0;                 \
     } while (0)
 
 #define vector_free(vec)     \
     do {                     \
-        free((vec)->items);  \
-        (vec)->count = 0;    \
-        (vec)->capacity = 0; \
+        free((vec).items);  \
     } while (0)
 
 #endif //VECTOR_H_
