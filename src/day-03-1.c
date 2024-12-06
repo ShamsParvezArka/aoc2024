@@ -28,7 +28,7 @@
 int main(void) {
     size_t soln = 0;
     
-    for (size_t i = 0; i < 654; i++) {
+    for (size_t i = 0; i < 423; i++) {
     	long a, b;
    		scanf("%ld%ld", &a, &b);
 
