@@ -35,7 +35,7 @@ bool is_safe(vector_t *vec) {
     return (is_increasing ^ is_decreasing) ? true : false;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv)
     const size_t ts = 1000;
     const size_t max = 100;
 

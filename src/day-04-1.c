@@ -43,7 +43,7 @@ int find_word(char grid[][256], int row, int col, char *word, int dir[]) {
     return 1;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
     char grid[256][256];
     read_input(grid);
 
